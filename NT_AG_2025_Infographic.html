@@ -646,50 +646,133 @@
     <h2>Church Health Metrics</h2>
     <p>Five key ratios measuring missional effectiveness, assimilation, growth, discipleship, and reproduction</p>
   </div>
-  <div class="health-grid">
-    <div class="health-card">
-      <div class="metric-name">AC Ratio</div>
-      <div class="metric-val">4.2</div>
-      <div class="metric-target">Target: &lt; 5.0</div>
-      <div class="metric-status good">Healthy</div>
-      <div style="font-size:10px; color:var(--white-dim); margin-top:8px;">Missional Effectiveness</div>
+  <div style="display:flex; flex-direction:column; gap:20px;">
+
+    <!-- AC — Missional Effectiveness -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">4.2</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Missional Effectiveness (AC)</span>
+        </div>
+        <span class="metric-status good" style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(52,211,153,0.15); color:var(--green);">Healthy</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 conversion for every 4.2 people</strong> attending on Sunday
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;5</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;8</div>
+        <!-- NT marker at 4.2 on 0-10 scale = 42% -->
+        <div style="position:absolute; left:42%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:42%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold);">NT 4.2</div>
+        <!-- National marker at 3.5 = 35% -->
+        <div style="position:absolute; left:35%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:35%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa;">Nat'l 3.5</div>
+      </div>
     </div>
-    <div class="health-card">
-      <div class="metric-name">CW Ratio</div>
-      <div class="metric-val">2.7</div>
-      <div class="metric-target">Target: &lt; 3.0</div>
-      <div class="metric-status good">Healthy</div>
-      <div style="font-size:10px; color:var(--white-dim); margin-top:8px;">Assimilation</div>
+
+    <!-- CW — Assimilation -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">2.7</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Assimilation (CW)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(52,211,153,0.15); color:var(--green);">Healthy</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 water baptism for every 2.7 conversions</strong> &mdash; new believers are getting baptized
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;3</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;5</div>
+        <!-- NT at 2.7 on 0-6 scale = 45% -->
+        <div style="position:absolute; left:45%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:45%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold);">NT 2.7</div>
+        <!-- National at 3.1 = 51.7% -->
+        <div style="position:absolute; left:51.7%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:51.7%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa;">Nat'l 3.1</div>
+      </div>
     </div>
-    <div class="health-card">
-      <div class="metric-name">AW Ratio</div>
-      <div class="metric-val">11.4</div>
-      <div class="metric-target">Target: &lt; 15.0</div>
-      <div class="metric-status good">Healthy</div>
-      <div style="font-size:10px; color:var(--white-dim); margin-top:8px;">Growth</div>
+
+    <!-- AW — Growth -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">11.4</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Growth (AW)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(52,211,153,0.15); color:var(--green);">Healthy</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 water baptism for every 11.4 attendees</strong> &mdash; church is reaching new people
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;15</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;25</div>
+        <!-- NT at 11.4 on 0-30 scale = 38% -->
+        <div style="position:absolute; left:38%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:38%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold);">NT 11.4</div>
+        <!-- National at 11.1 = 37% -->
+        <div style="position:absolute; left:37%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:37%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa;">Nat'l 11.1</div>
+      </div>
     </div>
-    <div class="health-card">
-      <div class="metric-name">CS Ratio</div>
-      <div class="metric-val">4.9</div>
-      <div class="metric-target">Target: 3.0 &ndash; 4.0</div>
-      <div class="metric-status ok">Monitor</div>
-      <div style="font-size:10px; color:var(--white-dim); margin-top:8px;">Discipleship</div>
+
+    <!-- CS — Discipleship -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">4.9</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Discipleship (CS)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(251,191,36,0.15); color:var(--yellow);">Monitor</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 Spirit baptism for every 4.9 conversions</strong> &mdash; healthy is 3&ndash;4, slightly above target
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(248,113,113,0.15) 0%, rgba(248,113,113,0.15) 20%, rgba(52,211,153,0.25) 20%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Too low &lt;3</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;7</div>
+        <!-- NT at 4.9 on 0-10 scale = 49% -->
+        <div style="position:absolute; left:49%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:49%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold);">NT 4.9</div>
+        <!-- National at 6.6 = 66% -->
+        <div style="position:absolute; left:66%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:66%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa;">Nat'l 6.6</div>
+      </div>
     </div>
-    <div class="health-card">
-      <div class="metric-name">AS Ratio</div>
-      <div class="metric-val">20.7</div>
-      <div class="metric-target">Target: 15.0 &ndash; 20.0</div>
-      <div class="metric-status ok">Monitor</div>
-      <div style="font-size:10px; color:var(--white-dim); margin-top:8px;">Reproduction</div>
+
+    <!-- AS — Reproduction -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">20.7</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Reproduction (AS)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(251,191,36,0.15); color:var(--yellow);">Monitor</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 Spirit baptism for every 20.7 attendees</strong> &mdash; healthy is 15&ndash;20, slightly above target
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;20</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;30</div>
+        <!-- NT at 20.7 on 0-40 scale = 51.75% -->
+        <div style="position:absolute; left:51.75%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:51.75%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold);">NT 20.7</div>
+        <!-- National at 23.3 = 58.25% -->
+        <div style="position:absolute; left:58.25%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:58.25%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa;">Nat'l 23.3</div>
+      </div>
     </div>
+
   </div>
-  <div class="annotation">
-    <strong>AC</strong> = attendance &divide; conversions &nbsp;&middot;&nbsp;
-    <strong>CW</strong> = conversions &divide; water baptisms &nbsp;&middot;&nbsp;
-    <strong>AW</strong> = attendance &divide; water baptisms<br>
-    <strong>CS</strong> = conversions &divide; Spirit baptisms &nbsp;&middot;&nbsp;
-    <strong>AS</strong> = attendance &divide; Spirit baptisms &nbsp;&middot;&nbsp;
-    National AC: 3.5 &nbsp;|&nbsp; CW: 3.1 &nbsp;|&nbsp; AW: 11.1 &nbsp;|&nbsp; CS: 6.6 &nbsp;|&nbsp; AS: 23.3
+  <div class="annotation" style="margin-top:24px;">
+    <span style="display:inline-block; width:12px; height:4px; background:var(--gold); border-radius:2px; vertical-align:middle;"></span> <strong>North Texas</strong> &nbsp;&nbsp;
+    <span style="display:inline-block; width:12px; height:4px; background:#60a5fa; border-radius:2px; vertical-align:middle;"></span> <strong style="color:#60a5fa;">National</strong> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+    Lower ratios = healthier &mdash; fewer people needed per outcome
   </div>
 
   <div class="divider"></div>
