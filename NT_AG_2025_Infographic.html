@@ -1085,20 +1085,37 @@ new Chart(document.getElementById('settingChart'), {
 });
 
 // ===== 6. CONVERSIONS TREND =====
+// Raw data from PDF
+const ntConv = [7368, 13257, 22900, 17713, 15986, 17206, 20141, 23711, 24559];
+const natConv = [222896, 319558, 486339, 440998, 341567, 405762, 481488, 529459, 571030];
+
 new Chart(document.getElementById('conversionTrendChart'), {
   type: 'line',
   data: {
     labels: ['1980', '1990', '2000', '2010', '2020', '2022', '2023', '2024', '2025'],
     datasets: [{
       label: 'North Texas',
-      data: [7368, 13257, 22900, 17713, 15986, 17206, 20141, 23711, 24559],
+      data: ntConv,
       borderColor: gold,
       backgroundColor: 'rgba(212,168,67,0.1)',
       borderWidth: 2.5,
-      pointRadius: 5,
+      pointRadius: 4,
       pointBackgroundColor: gold,
       fill: true,
-      tension: 0.3
+      tension: 0.3,
+      yAxisID: 'y'
+    },{
+      label: 'National',
+      data: natConv,
+      borderColor: '#60a5fa',
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      borderDash: [6, 3],
+      pointRadius: 3,
+      pointBackgroundColor: '#60a5fa',
+      fill: false,
+      tension: 0.3,
+      yAxisID: 'y1'
     }]
   },
   options: {
@@ -1106,9 +1123,18 @@ new Chart(document.getElementById('conversionTrendChart'), {
     maintainAspectRatio: false,
     scales: {
       y: {
+        type: 'linear',
+        position: 'left',
         beginAtZero: false,
         grid: { color: 'rgba(255,255,255,0.05)' },
-        ticks: { callback: v => (v/1000).toFixed(0) + 'k', font: { size: 12 } }
+        ticks: { callback: v => (v/1000).toFixed(0) + 'k', font: { size: 12 }, color: gold }
+      },
+      y1: {
+        type: 'linear',
+        position: 'right',
+        beginAtZero: false,
+        grid: { drawOnChartArea: false },
+        ticks: { callback: v => (v/1000).toFixed(0) + 'k', font: { size: 12 }, color: '#60a5fa' }
       },
       x: {
         grid: { display: false },
@@ -1116,10 +1142,15 @@ new Chart(document.getElementById('conversionTrendChart'), {
       }
     },
     plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        labels: { padding: 16, usePointStyle: true, pointStyle: 'circle', font: { size: 11 } }
+      },
       tooltip: {
         ...tooltipStyle,
         callbacks: {
-          label: ctx => ` ${ctx.parsed.y.toLocaleString()} conversions`
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} conversions`
         }
       }
     }
