@@ -19,6 +19,7 @@ jobs:
           mkdir _site
           cp index.html _site/
           cp NT_AG_2025_Infographic.html _site/
+          cp Russellville_First_AG_2025.html _site/
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
