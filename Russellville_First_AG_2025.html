@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Russellville First AG — 2025 Church Health Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-light: #0f2038;
+    --navy-card: #132640;
+    --gold: #d4a843;
+    --gold-light: #f0d078;
+    --gold-dark: #b8922e;
+    --white: #f0f2f5;
+    --white-dim: #a8b4c4;
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --blue-accent: #60a5fa;
+    --teal: #2dd4bf;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .hero {
+    position: relative;
+    padding: 80px 0 60px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border: 1px solid var(--gold);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero .subtitle {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--white-dim);
+    margin-bottom: 48px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .number {
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat .label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 8px;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-dark), transparent);
+    margin: 48px 0;
+    opacity: 0.4;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .section-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .section-header p {
+    font-size: 14px;
+    color: var(--white-dim);
+    margin-top: 4px;
+  }
+
+  .chart-card {
+    background: var(--navy-card);
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid rgba(212,168,67,0.1);
+  }
+  .chart-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .stat-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .stat-card {
+    background: var(--navy-card);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    border: 1px solid rgba(212,168,67,0.08);
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: rgba(212,168,67,0.25); }
+  .stat-card .icon { font-size: 28px; margin-bottom: 12px; }
+  .stat-card .value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-card .sub {
+    font-size: 11px;
+    color: var(--white-dim);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .stat-card .desc {
+    font-size: 11px;
+    color: var(--white-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 32px 0;
+  }
+
+  .annotation {
+    text-align: center;
+    font-size: 13px;
+    color: var(--white-dim);
+    margin-top: 16px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .annotation strong {
+    color: var(--gold-light);
+    font-style: normal;
+  }
+
+  .insight-list {
+    list-style: none;
+    padding: 0;
+  }
+  .insight-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .insight-list li:last-child { border-bottom: none; }
+  .insight-list li strong { color: var(--gold-light); }
+
+  .footer {
+    text-align: center;
+    padding: 48px 0 64px;
+    color: var(--white-dim);
+    font-size: 13px;
+  }
+  .footer .logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .stat-cards { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 30px; }
+    .hero-stat .number { font-size: 40px; }
+    .hero-stats { gap: 32px; }
+  }
+  @media (max-width: 600px) {
+    .stat-cards { grid-template-columns: repeat(2, 1fr); }
+    .hero-stats { flex-direction: column; gap: 24px; }
+  }
+
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    body { background: var(--navy) !important; color: var(--white) !important; }
+    .chart-card, .stat-card { background: var(--navy-card) !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">Church Health by the Numbers &mdash; 2025</div>
+    <h1>Russellville First<br><span>Assembly of God</span></h1>
+    <p class="subtitle">Church Health by the Numbers &mdash; 2025</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number">1,105</div>
+        <div class="label">Sunday AM Attendance</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">187</div>
+        <div class="label">Conversions</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">38</div>
+        <div class="label">Water Baptisms</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number">39</div>
+        <div class="label">Spirit Baptisms</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="divider"></div>
+
+  <!-- ===== THE BIG PICTURE ===== -->
+  <div class="section-header">
+    <h2>The Big Picture</h2>
+    <p>Key numbers for Russellville First Assembly of God</p>
+  </div>
+  <div class="stat-cards">
+    <div class="stat-card">
+      <div class="icon">&#9775;</div>
+      <div class="value">1,105</div>
+      <div class="desc">Worship Attendance</div>
+      <div class="sub">Sunday AM</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">&#10029;</div>
+      <div class="value">187</div>
+      <div class="desc">Conversions</div>
+      <div class="sub">Decisions for Christ</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">&#128167;</div>
+      <div class="value">38</div>
+      <div class="desc">Water Baptisms</div>
+      <div class="sub">Obedience in baptism</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon">&#128293;</div>
+      <div class="value">39</div>
+      <div class="desc">Spirit Baptisms</div>
+      <div class="sub">Empowered for ministry</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== HOW WE COMPARE ===== -->
+  <div class="section-header">
+    <h2>How We Compare</h2>
+    <p>Russellville First AG vs Arkansas District, Gulf Area, and National averages</p>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3 style="text-align:center; font-size:15px; margin-bottom:20px; color:var(--gold-light);">Conversions</h3>
+      <div class="chart-container" style="max-height:320px;">
+        <canvas id="conversionsChart"></canvas>
+      </div>
+      <div class="annotation" style="margin-top:12px;">
+        Russellville reported <strong>187 conversions</strong> in 2025<br>
+        Arkansas District total: 6,659 &middot; 1yr <strong>+18.8%</strong>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3 style="text-align:center; font-size:15px; margin-bottom:20px; color:var(--gold-light);">Water Baptisms</h3>
+      <div class="chart-container" style="max-height:320px;">
+        <canvas id="baptismsChart"></canvas>
+      </div>
+      <div class="annotation" style="margin-top:12px;">
+        Russellville reported <strong>38 water baptisms</strong> in 2025<br>
+        Arkansas District total: 3,896 &middot; 1yr <strong>+7.9%</strong>
+      </div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="chart-card">
+      <h3 style="text-align:center; font-size:15px; margin-bottom:20px; color:var(--gold-light);">Spirit Baptisms</h3>
+      <div class="chart-container" style="max-height:320px;">
+        <canvas id="spiritChart"></canvas>
+      </div>
+      <div class="annotation" style="margin-top:12px;">
+        Russellville reported <strong>39 Spirit baptisms</strong> in 2025<br>
+        Arkansas District total: 1,607 &middot; 1yr <strong>+3.1%</strong>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3 style="text-align:center; font-size:15px; margin-bottom:20px; color:var(--gold-light);">Arkansas District Snapshot</h3>
+      <div style="display:flex; flex-direction:column; justify-content:center; padding:16px 0;">
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Worship Attendance</span>
+          <span style="font-weight:700; color:var(--gold);">42,749</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Mean Church Size</span>
+          <span style="font-weight:700; color:var(--gold);">116</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Median Church Size</span>
+          <span style="font-weight:700; color:var(--gold);">54</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Growing</span>
+          <span style="font-weight:700; color:var(--green);">47.9%</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Plateaued</span>
+          <span style="font-weight:700; color:var(--yellow);">22.4%</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Declining</span>
+          <span style="font-weight:700; color:var(--red);">29.8%</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Rural Churches</span>
+          <span style="font-weight:700; color:var(--white);">73.7%</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">AG Name Use</span>
+          <span style="font-weight:700; color:var(--white);">90.0%</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+          <span style="color:var(--white-dim); font-size:13px;">Avg Pastor Age</span>
+          <span style="font-weight:700; color:var(--white);">58</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0;">
+          <span style="color:var(--white-dim); font-size:13px;">Avg Tenure</span>
+          <span style="font-weight:700; color:var(--white);">11.4 yrs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== CHURCH HEALTH METRICS ===== -->
+  <div class="section-header">
+    <h2>Church Health Metrics</h2>
+    <p>Five key ratios measuring missional effectiveness, assimilation, growth, discipleship, and reproduction</p>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:20px;">
+
+    <!-- AC -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">5.91</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Missional Effectiveness (AC)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(251,191,36,0.15); color:var(--yellow);">Monitor</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 conversion for every 5.9 people</strong> attending on Sunday &mdash; goal is under 5.0
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible; margin-bottom:20px;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;5</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;8</div>
+        <!-- Russellville 5.91/10 = 59.1% -->
+        <div style="position:absolute; left:59.1%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:59.1%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold); white-space:nowrap;">RFAG 5.91</div>
+        <!-- Arkansas 6.42/10 = 64.2% -->
+        <div style="position:absolute; left:64.2%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--teal); border-radius:2px; opacity:0.8;"></div>
+        <div style="position:absolute; left:64.2%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--teal); white-space:nowrap;">AR 6.42</div>
+        <!-- National 3.54/10 = 35.4% -->
+        <div style="position:absolute; left:35.4%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:35.4%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa; white-space:nowrap;">Nat'l 3.54</div>
+      </div>
+    </div>
+
+    <!-- CW -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">4.92</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Assimilation (CW)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(248,113,113,0.15); color:var(--red);">Needs Attention</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 water baptism for every 4.9 conversions</strong> &mdash; goal is under 3.0; converts aren't getting baptized quickly
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 37.5%, rgba(251,191,36,0.2) 37.5%, rgba(251,191,36,0.2) 62.5%, rgba(248,113,113,0.2) 62.5%); border-radius:6px; overflow:visible; margin-bottom:20px;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;3</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;5</div>
+        <!-- Russellville 4.92/8 = 61.5% -->
+        <div style="position:absolute; left:61.5%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:61.5%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold); white-space:nowrap;">RFAG 4.92</div>
+        <!-- Arkansas 1.71/8 = 21.4% -->
+        <div style="position:absolute; left:21.4%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--teal); border-radius:2px; opacity:0.8;"></div>
+        <div style="position:absolute; left:21.4%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--teal); white-space:nowrap;">AR 1.71</div>
+        <!-- National 3.15/8 = 39.4% -->
+        <div style="position:absolute; left:39.4%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:39.4%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa; white-space:nowrap;">Nat'l 3.15</div>
+      </div>
+    </div>
+
+    <!-- AW -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">29.08</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Growth (AW)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(248,113,113,0.15); color:var(--red);">Needs Attention</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 water baptism for every 29 attendees</strong> &mdash; goal is under 15; nearly 3x the district average
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 37.5%, rgba(251,191,36,0.2) 37.5%, rgba(251,191,36,0.2) 62.5%, rgba(248,113,113,0.2) 62.5%); border-radius:6px; overflow:visible; margin-bottom:20px;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;15</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;25</div>
+        <!-- Russellville 29.08/40 = 72.7% -->
+        <div style="position:absolute; left:72.7%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:72.7%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold); white-space:nowrap;">RFAG 29.08</div>
+        <!-- Arkansas 10.97/40 = 27.4% -->
+        <div style="position:absolute; left:27.4%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--teal); border-radius:2px; opacity:0.8;"></div>
+        <div style="position:absolute; left:27.4%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--teal); white-space:nowrap;">AR 10.97</div>
+        <!-- National 11.15/40 = 27.9% -->
+        <div style="position:absolute; left:27.9%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:27.9%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa; white-space:nowrap;">Nat'l 11.15</div>
+      </div>
+    </div>
+
+    <!-- CS -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">4.79</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Discipleship (CS)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(251,191,36,0.15); color:var(--yellow);">Monitor</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 Spirit baptism for every 4.8 conversions</strong> &mdash; healthy range is 3&ndash;4, close but slightly above
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(248,113,113,0.15) 0%, rgba(248,113,113,0.15) 20%, rgba(52,211,153,0.25) 20%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible; margin-bottom:20px;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Too low &lt;3</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;7</div>
+        <!-- Russellville 4.79/10 = 47.9% -->
+        <div style="position:absolute; left:47.9%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:47.9%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold); white-space:nowrap;">RFAG 4.79</div>
+        <!-- Arkansas 4.14/10 = 41.4% -->
+        <div style="position:absolute; left:41.4%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--teal); border-radius:2px; opacity:0.8;"></div>
+        <div style="position:absolute; left:41.4%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--teal); white-space:nowrap;">AR 4.14</div>
+        <!-- National 6.58/10 = 65.8% -->
+        <div style="position:absolute; left:65.8%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:65.8%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa; white-space:nowrap;">Nat'l 6.58</div>
+      </div>
+    </div>
+
+    <!-- AS -->
+    <div class="chart-card" style="padding:24px 32px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+        <div>
+          <span style="font-size:18px; font-weight:800; color:var(--gold);">28.33</span>
+          <span style="font-size:13px; color:var(--white-dim); margin-left:8px;">Reproduction (AS)</span>
+        </div>
+        <span style="display:inline-block; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; text-transform:uppercase; background:rgba(248,113,113,0.15); color:var(--red);">Needs Attention</span>
+      </div>
+      <div style="font-size:13px; color:var(--white); margin-bottom:12px;">
+        <strong>1 Spirit baptism for every 28.3 attendees</strong> &mdash; goal is under 20; above both district and national averages
+      </div>
+      <div style="position:relative; height:28px; background:linear-gradient(to right, rgba(52,211,153,0.25) 0%, rgba(52,211,153,0.25) 50%, rgba(251,191,36,0.2) 50%, rgba(251,191,36,0.2) 70%, rgba(248,113,113,0.2) 70%); border-radius:6px; overflow:visible; margin-bottom:20px;">
+        <div style="position:absolute; left:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Healthy &lt;20</div>
+        <div style="position:absolute; right:0; top:0; height:100%; display:flex; align-items:center; padding:0 6px; font-size:9px; color:var(--white-dim);">Struggling &gt;30</div>
+        <!-- Russellville 28.33/40 = 70.8% -->
+        <div style="position:absolute; left:70.8%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--gold); border-radius:2px;"></div>
+        <div style="position:absolute; left:70.8%; top:-20px; transform:translateX(-50%); font-size:10px; font-weight:700; color:var(--gold); white-space:nowrap;">RFAG 28.33</div>
+        <!-- Arkansas 26.60/40 = 66.5% -->
+        <div style="position:absolute; left:66.5%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:var(--teal); border-radius:2px; opacity:0.8;"></div>
+        <div style="position:absolute; left:66.5%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--teal); white-space:nowrap;">AR 26.60</div>
+        <!-- National 23.32/40 = 58.3% -->
+        <div style="position:absolute; left:58.3%; top:-4px; transform:translateX(-50%); width:4px; height:36px; background:#60a5fa; border-radius:2px; opacity:0.7;"></div>
+        <div style="position:absolute; left:58.3%; bottom:-16px; transform:translateX(-50%); font-size:10px; font-weight:600; color:#60a5fa; white-space:nowrap;">Nat'l 23.32</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="annotation" style="margin-top:24px;">
+    <span style="display:inline-block; width:12px; height:4px; background:var(--gold); border-radius:2px; vertical-align:middle;"></span> <strong>Russellville First AG</strong> &nbsp;&nbsp;
+    <span style="display:inline-block; width:12px; height:4px; background:var(--teal); border-radius:2px; vertical-align:middle;"></span> <strong style="color:var(--teal);">Arkansas District</strong> &nbsp;&nbsp;
+    <span style="display:inline-block; width:12px; height:4px; background:#60a5fa; border-radius:2px; vertical-align:middle;"></span> <strong style="color:#60a5fa;">National</strong> &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+    Lower ratios = healthier &mdash; fewer people needed per outcome
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== STRENGTHS & AREAS FOR GROWTH ===== -->
+  <div class="section-header">
+    <h2>Strengths &amp; Areas for Growth</h2>
+    <p>Where Russellville First AG excels and where there's room to improve</p>
+  </div>
+  <div class="two-col">
+    <div class="chart-card" style="padding:32px;">
+      <h3 style="font-size:16px; font-weight:700; color:var(--green); margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:20px;">&#9650;</span> Strengths
+      </h3>
+      <ul class="insight-list">
+        <li>
+          <strong>CS ratio (4.79)</strong> is close to the healthy range of 3&ndash;4 and significantly better than both the Gulf Area (6.67) and National (6.58) averages. Spirit baptisms are happening relative to conversions.
+        </li>
+        <li>
+          <strong>Attendance of 1,105</strong> is nearly <strong>10x the Arkansas median of 54</strong> and about 9.5x the district mean of 116 &mdash; one of the state's largest AG churches.
+        </li>
+        <li>
+          <strong>187 conversions</strong> means people are responding to the gospel. The raw conversion number reflects an active, evangelistic culture.
+        </li>
+      </ul>
+    </div>
+    <div class="chart-card" style="padding:32px;">
+      <h3 style="font-size:16px; font-weight:700; color:var(--red); margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:20px;">&#9660;</span> Areas for Growth
+      </h3>
+      <ul class="insight-list">
+        <li>
+          <strong>CW ratio (4.92)</strong> &mdash; converts are not getting water baptized at the rate the district does (1.71). Nearly 3x the national average of 3.15. A stronger pathway from decision to baptism would close this gap.
+        </li>
+        <li>
+          <strong>AW ratio (29.08)</strong> &mdash; nearly 3x the district average (10.97) and national average (11.15). For every 29 people in the pew, only 1 is getting water baptized.
+        </li>
+        <li>
+          <strong>AS ratio (28.33)</strong> &mdash; above the healthy goal of 20 and higher than both Arkansas (26.60) and National (23.32). More emphasis on Spirit-empowered life for the whole congregation.
+        </li>
+        <li>
+          <strong>AC ratio (5.91)</strong> &mdash; slightly above the healthy threshold of 5.0, though better than the Arkansas district (6.42). More intentional outreach moments could push this into the green.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== FULL COMPARISON TABLE ===== -->
+  <div class="section-header">
+    <h2>Full Health Ratio Comparison</h2>
+    <p>Russellville First AG vs Arkansas, Gulf Area, and National averages</p>
+  </div>
+  <div class="chart-card" style="padding:24px;">
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--gold); text-align:left; padding:12px 16px; border-bottom:1px solid rgba(212,168,67,0.2);">Metric</th>
+          <th style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--gold); text-align:right; padding:12px 16px; border-bottom:1px solid rgba(212,168,67,0.2);">Russellville</th>
+          <th style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--teal); text-align:right; padding:12px 16px; border-bottom:1px solid rgba(212,168,67,0.2);">Arkansas</th>
+          <th style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--white-dim); text-align:right; padding:12px 16px; border-bottom:1px solid rgba(212,168,67,0.2);">Gulf Area</th>
+          <th style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:#60a5fa; text-align:right; padding:12px 16px; border-bottom:1px solid rgba(212,168,67,0.2);">National</th>
+          <th style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--green); text-align:right; padding:12px 16px; border-bottom:1px solid rgba(212,168,67,0.2);">Goal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+          <td style="padding:14px 16px; font-size:14px; font-weight:600;">AC <span style="font-weight:400; color:var(--white-dim); font-size:12px;">(Att/Conv)</span></td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; font-weight:700; color:var(--gold);">5.91</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--teal);">6.42</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--white-dim);">3.76</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:#60a5fa;">3.54</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--green);">&lt;5.0</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+          <td style="padding:14px 16px; font-size:14px; font-weight:600;">CW <span style="font-weight:400; color:var(--white-dim); font-size:12px;">(Conv/WBapt)</span></td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; font-weight:700; color:var(--gold);">4.92</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--teal);">1.71</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--white-dim);">2.73</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:#60a5fa;">3.15</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--green);">&lt;3.0</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+          <td style="padding:14px 16px; font-size:14px; font-weight:600;">AW <span style="font-weight:400; color:var(--white-dim); font-size:12px;">(Att/WBapt)</span></td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; font-weight:700; color:var(--gold);">29.08</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--teal);">10.97</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--white-dim);">10.28</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:#60a5fa;">11.15</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--green);">&lt;15</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+          <td style="padding:14px 16px; font-size:14px; font-weight:600;">CS <span style="font-weight:400; color:var(--white-dim); font-size:12px;">(Conv/SBapt)</span></td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; font-weight:700; color:var(--gold);">4.79</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--teal);">4.14</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--white-dim);">6.67</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:#60a5fa;">6.58</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--green);">3&ndash;4</td>
+        </tr>
+        <tr>
+          <td style="padding:14px 16px; font-size:14px; font-weight:600;">AS <span style="font-weight:400; color:var(--white-dim); font-size:12px;">(Att/SBapt)</span></td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; font-weight:700; color:var(--gold);">28.33</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--teal);">26.60</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--white-dim);">25.10</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:#60a5fa;">23.32</td>
+          <td style="padding:14px 16px; font-size:14px; text-align:right; color:var(--green);">&lt;20</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== LEGEND ===== -->
+  <div style="text-align:center; margin-bottom:24px;">
+    <span style="display:inline-block; width:12px; height:12px; background:var(--gold); border-radius:3px; vertical-align:middle;"></span>
+    <span style="font-size:13px; font-weight:600; margin-right:24px;"> Russellville First AG</span>
+    <span style="display:inline-block; width:12px; height:12px; background:var(--teal); border-radius:3px; vertical-align:middle;"></span>
+    <span style="font-size:13px; font-weight:600; color:var(--teal); margin-right:24px;"> Arkansas District</span>
+    <span style="display:inline-block; width:12px; height:12px; background:#60a5fa; border-radius:3px; vertical-align:middle;"></span>
+    <span style="font-size:13px; font-weight:600; color:#60a5fa;"> National AG</span>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="logo-text">Russellville First Assembly of God &mdash; 2025 Church Health Report</div>
+    <p style="margin-top:16px; max-width:600px; margin-left:auto; margin-right:auto; font-style:italic; line-height:1.6;">
+      &ldquo;So Christ himself gave the apostles, the prophets, the evangelists, the pastors and teachers,
+      to equip his people for works of service, so that the body of Christ may be built up.&rdquo;
+    </p>
+    <p style="margin-top:8px; color:var(--gold); font-weight:600;">Ephesians 4:11&ndash;12</p>
+    <p style="margin-top:24px; font-size:11px;">
+      Data sourced from 2025 Annual Church Ministries Reports &middot; Arkansas District, Gulf Area, and National AG
+    </p>
+  </div>
+</footer>
+
+<script>
+  Chart.defaults.color = '#a8b4c4';
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.plugins.legend.labels.usePointStyle = true;
+  Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+
+  const gold = '#d4a843';
+  const teal = '#2dd4bf';
+  const blueAccent = '#60a5fa';
+  const purple = '#8b5cf6';
+
+  // Conversions per 100 attendance
+  new Chart(document.getElementById('conversionsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Russellville', 'Arkansas', 'Gulf Area', 'National'],
+      datasets: [{
+        label: 'Conversions per 100 Attendance',
+        data: [
+          (187 / 1105 * 100).toFixed(1),
+          (6659 / 42749 * 100).toFixed(1),
+          (1 / 3.76 * 100).toFixed(1),
+          (1 / 3.54 * 100).toFixed(1)
+        ],
+        backgroundColor: [gold, teal, purple, blueAccent],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y + ' per 100 attendees' } }
+      },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // Water Baptisms per 100 attendance
+  new Chart(document.getElementById('baptismsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Russellville', 'Arkansas', 'Gulf Area', 'National'],
+      datasets: [{
+        label: 'Water Baptisms per 100 Attendance',
+        data: [
+          (38 / 1105 * 100).toFixed(1),
+          (3896 / 42749 * 100).toFixed(1),
+          (1 / 10.28 * 100).toFixed(1),
+          (1 / 11.15 * 100).toFixed(1)
+        ],
+        backgroundColor: [gold, teal, purple, blueAccent],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y + ' per 100 attendees' } }
+      },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // Spirit Baptisms per 100 attendance
+  new Chart(document.getElementById('spiritChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Russellville', 'Arkansas', 'Gulf Area', 'National'],
+      datasets: [{
+        label: 'Spirit Baptisms per 100 Attendance',
+        data: [
+          (39 / 1105 * 100).toFixed(1),
+          (1607 / 42749 * 100).toFixed(1),
+          (1 / 25.10 * 100).toFixed(1),
+          (1 / 23.32 * 100).toFixed(1)
+        ],
+        backgroundColor: [gold, teal, purple, blueAccent],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y + ' per 100 attendees' } }
+      },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
